@@ -1,0 +1,31 @@
+
+  <nav class="navbar navbar-expand-lg navbar-secondary bg-secondary">
+    <a class="navbar-brand" href="#">Fantasy Football News Scraper</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="/">Home</a>
+        <a class="nav-item nav-link" href="/saved">Saved Articles<span class="sr-only">(current)</span></a>
+        <button class="btn btn-success scrape-new" type="submit">Scrape New Articles</button>
+        <button class="btn btn-danger clear" type="submit">Clear Articles</button>
+      </div>
+    </div>
+  </nav>
+  <div class="jumbotron jumbotron-fluid">
+    <img src="../../../Pictures/fantasyfootball.jpg" alt="football" class="background-image">
+    <div class="words">
+      <h1 class="display-4 text-center">Saved Articles</h1>
+      <h5 class="lead text-center">Your Saved Articles</h5>
+    </div>
+  </div>
+  <div class="container">
+    {{#each Article}}
+      {{this.title}}
+    {{#/each}}
+  </div>
+  <nav class="navbar navbar-secondary bg-secondary">
+    <span class="navbar-brand mb-0 h1">Fantasy Football News Scraper</span>
+  </nav>

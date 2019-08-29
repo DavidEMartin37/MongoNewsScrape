@@ -1,32 +1,40 @@
 
-  <nav class="navbar navbar-expand-lg navbar-secondary bg-secondary">
-    <a class="navbar-brand" href="#">Fantasy Football News Scraper</a>
+  <nav class="navbar navbar-expand-lg navbar-secondary bg-secondary container">
+    <a class="navbar-brand text-light" href="/">Fantasy Football News Scraper</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="/saved">Saved Articles</a>
+        <a class="nav-item nav-link active text-light" href="/">Home <span class="sr-only ">(current)</span></a>
+        <a class="nav-item nav-link text-light" href="/saved">Saved Articles</a>
         <button class="btn btn-success scrape-new" type="submit">Scrape New Articles</button>
         <button class="btn btn-danger clear" type="submit">Clear Articles</button>
       </div>
     </div>
   </nav>
-  <div class="jumbotron jumbotron-fluid" style="background-image : url('fantasyfootball.jpg'); background-size: cover">
+  <div class="jumbotron jumbotron-fluid container" style="background-image : url('betterfootballfield.jpg'); background-size: cover">
     <div class="words">
       <h1 class="display-4 text-center">Fantasy Football News Scraper</h1>
-      <p class="lead text-center">Want to dominate your league? Stay up to date with all the latest news!</p>
+      <p class="lead text-center"><strong>Want to dominate your league? Stay up to date with all the latest news!</strong></p>
     </div>
   </div>
   <div class="container">
     {{#each Article}}
-      {{this.title}}
+      <div data-_id="{{this._id}}" class="card">
+        <div class="card-header text-light bg-secondary text-center">
+          <h3>
+            <a class="article-link text-light" target="_blank" rel="noopener noreferrer" href="{{this.link}}">{{this.title}}</a>
+            <a class="btn-lg btn-success save">Save Article</a>
+          </h3>
+        </div>
+        <div class="card-body">{{this.description}}</div>
+      </div>
     {{/each}}
   </div>
 <footer class="footer mt-auto py-3">
-  <div class="container">
-    <span class="text-muted">Place sticky footer content here.</span>
+  <div class="container bg-secondary">
+    <span class="text-light">Fantasy Football News Scraper</span>
   </div>
 </footer>

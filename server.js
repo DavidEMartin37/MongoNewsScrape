@@ -15,19 +15,12 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// var databaseUrl = "scraper";
-// var collections = ["scrapedData"];
-// var db = mongojs(databaseUrl, collections);
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongonewsscraper";
-mongoose.connect(MONGODB_URI);
-// mongoose.connect("mongodb://localhost/mongonewsscraper", { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 mongoose.set("useCreateIndex", true);
-app.get("/", (req,res) => {
 
-})
 app.get("/api/scrape", (req, res) => {
-
   axios.get("https://bleacherreport.com/fantasy-football").then(function (response) {
 
     var $ = cheerio.load(response.data);
@@ -51,44 +44,60 @@ app.get("/api/scrape", (req, res) => {
       .catch(function(err) {
         console.log(err);
       });
-      console.log(results);
+      res.json(results);
   });
 });
 
-app.get("/articles", function(req, res) {
-  db.Article.find({})
+app.get("/api/clear", function(req, res) {
+  db.Article.remove({ saved: false})
+    .then(function(articles) {
+      res.render("index", { Article: articles });
+    });
+});
+
+app.get("/", function(req, res) {
+  db.Article.find({ saved: false })
     .then(function(articles) {
       console.log(articles)
-      res.render('index',{Article : articles});
+      res.render('index',{ Article : articles });
     })
     .catch(function(err) {
       res.json(err);
     });
 });
 
-app.get("/articles/:id", function(req, res) {
-  db.Article.findOne({ _id: req.params.id })
-    .populate("articleId")
-    .then(function(dbArticle) {
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      res.json(err);
+app.get("/saved", function(req, res) {
+  db.Article.find({ saved: true })
+    .then(function(articles) {
+      res.render("saved", { Article: articles });
     });
 });
 
-app.post("/articles/:id", function(req, res) {
-  db.Note.create(req.body)
-    .then(function(dbNote) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-    })
-    .then(function(dbArticle) {
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
+
+
+// app.get("/articles/:id", function(req, res) {
+//   db.Article.findOne({ _id: req.params.id })
+//     .populate("articleId")
+//     .then(function(dbArticle) {
+//       res.json(dbArticle);
+//     })
+//     .catch(function(err) {
+//       res.json(err);
+//     });
+// });
+
+// app.post("/articles/:id", function(req, res) {
+//   db.Note.create(req.body)
+//     .then(function(dbNote) {
+//       return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+//     })
+//     .then(function(dbArticle) {
+//       res.json(dbArticle);
+//     })
+//     .catch(function(err) {
+//       res.json(err);
+//     });
+// });
 
 app.listen(PORT, function () {
   console.log("Server listening on: http://localhost:" + PORT);
